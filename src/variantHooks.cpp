@@ -36,6 +36,7 @@
 #include "Arduino_FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
+#include <dbg.h>
 
 extern void setup(void);
 extern void loop(void);
@@ -46,6 +47,7 @@ void initVariant(void) __attribute__ ((OS_main));
 
 void initVariant(void)
 {
+	DBG();
     // As the Task stacks are on heap before Task allocated heap variables,
     // the library default __malloc_heap_end = 0 doesn't work.
     __malloc_heap_end = (char *)(RAMEND - __malloc_margin);
@@ -55,7 +57,12 @@ void initVariant(void)
 #endif
 
     setup();                    // the normal Arduino setup() function is run here.
+
+    DBG();
+
     vTaskStartScheduler();      // initialise and run the freeRTOS scheduler. Execution should never return here.
+
+    DBG();
 }
 
 
